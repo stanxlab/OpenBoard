@@ -1122,6 +1122,7 @@ void UBBoardController::zoom(const qreal ratio, QPointF scenePoint)
 void UBBoardController::handScroll(qreal dx, qreal dy)
 {
     qreal antiScaleRatio = 1/(mSystemScaleFactor * currentZoom());
+    // qInfo() << "-->UBBoardController::handScroll" << dx << dy << antiScaleRatio << mSystemScaleFactor << currentZoom();
     mControlView->translate(dx*antiScaleRatio, dy*antiScaleRatio);
 
     UBApplication::applicationController->adjustDisplayView();

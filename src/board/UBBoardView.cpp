@@ -254,13 +254,15 @@ void UBBoardView::keyPressEvent (QKeyEvent *event)
             switch (event->key ())
             {
             case Qt::Key_Plus:
-            {
+            {   
+                qInfo() << "--->zoomIn: ";
                 mController->zoomIn ();
                 event->accept ();
                 break;
             }
             case Qt::Key_Minus:
             {
+                qInfo() << "--->zoomOut: ";
                 mController->zoomOut ();
                 event->accept ();
                 break;
@@ -307,6 +309,38 @@ void UBBoardView::keyPressEvent (QKeyEvent *event)
 
 bool UBBoardView::event (QEvent * e)
 {
+    // qInfo() << "UBBoardView::event" << e->type();
+    if (e->type() == QEvent::NativeGesture) {
+        // mac 触控板缩放手势
+        QNativeGestureEvent *nativeGestureEvent = dynamic_cast<QNativeGestureEvent *>(e);
+        // qInfo() << "-->Native Gesture event triggered!" << nativeGestureEvent->gestureType();
+        if (nativeGestureEvent) {
+
+            if (nativeGestureEvent->gestureType() == Qt::ZoomNativeGesture) {
+                qInfo() << "-->Gesture detected! Value: " << nativeGestureEvent->value();
+                // Calculate the zoom factor
+                qreal newZoomFactor = 1 + nativeGestureEvent->value() * 5;
+                newZoomFactor = qBound(0.8, newZoomFactor, 1.4);
+
+                if (newZoomFactor < 1 && (horizontalScrollBar()->maximum() == 0) && (verticalScrollBar()->maximum() == 0))
+                {
+                    // Do not zoom out if we reached the maximum
+                    // qApp->beep();
+                    return true;
+                }
+                if (newZoomFactor > 1 && transform().m11() > UB_MAX_ZOOM)
+                {
+                    // qApp->beep();
+                    return true;
+                }
+
+                mController->zoom(newZoomFactor, mapToScene(nativeGestureEvent->position().toPoint()));
+                e->accept();
+                return true;
+            }
+        }
+    }
+
     if (e->type () == QEvent::Gesture)
     {
         QGestureEvent *gestureEvent = dynamic_cast<QGestureEvent *> (e);
@@ -783,6 +817,7 @@ QGraphicsItem* UBBoardView::determineItemToMove(QGraphicsItem *item)
 
 void UBBoardView::handleItemMousePress(QMouseEvent *event)
 {
+    qInfo() << "UBBoardView::handleItemMousePress";
     mLastPressedMousePos = mapToScene(event->pos());
     mFirstPressedMousePos = mLastPressedMousePos;
 
@@ -1280,6 +1315,7 @@ void UBBoardView::mouseMoveEvent (QMouseEvent *event)
 #endif
         qreal dx = eventPosition.x () - mPreviousPoint.x ();
         qreal dy = eventPosition.y () - mPreviousPoint.y ();
+        qInfo() << "--->Hand tool: " << dx << dy;
         mController->handScroll (dx, dy);
         mPreviousPoint = eventPosition;
         event->accept ();
@@ -1684,7 +1720,8 @@ void UBBoardView::mouseDoubleClickEvent (QMouseEvent *event)
 }
 
 void UBBoardView::wheelEvent (QWheelEvent *wheelEvent)
-{
+{   
+    // qInfo() << "--->UBBoardView::wheelEvent " << wheelEvent->angleDelta().x() << wheelEvent->angleDelta().y();
     if (!isInteractive())
     {
         // ignore event on non-interactive views
@@ -1736,6 +1773,18 @@ void UBBoardView::wheelEvent (QWheelEvent *wheelEvent)
 
             return;
         }
+    } 
+
+    // 数位笔模拟平移效果
+    int x = wheelEvent->angleDelta().x();  // X轴方向滚动
+    int y = wheelEvent->angleDelta().y();  // Y轴方向滚动
+    if(std::abs(x) > 100 || std::abs(y) > 100){
+        // 数位笔 120刻度处理, 每次移动50
+        mController->handScroll(x/120*30, y/120*55);
+
+        wheelEvent->accept();
+        UBApplication::applicationController->adjustDisplayView();
+        return;
     }
 
     // event not handled, send it to QAbstractScrollArea to scroll with wheel event

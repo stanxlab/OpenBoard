@@ -1,7 +1,7 @@
 TARGET = "OpenBoard"
 TEMPLATE = app
 
-CONFIG += c++17
+CONFIG += c++20
 CONFIG -= flat
 CONFIG += debug_and_release \
           no_include_pwd
@@ -173,21 +173,22 @@ macx {
    LIBS += -lcrypto
 
 
-   LIBS += -L/usr/local/lib -lquazip1-qt6.1.4
-   INCLUDEPATH += /opt/local/include/QuaZip-Qt6-1.4/quazip
-   
-   LIBS += -L/opt/local/lib
-   INCLUDEPATH += /usr/local/opt/openssl/include
-   INCLUDEPATH += /opt/local/include
+   LIBS += -L/usr/local/lib
+   INCLUDEPATH += /usr/local/include
 
-   LIBS        += -L/opt/local/lib -lpoppler
-   INCLUDEPATH += /opt/local/include/poppler
+   LIBS += -L/usr/local/lib -lquazip1-qt6.1.5
+   INCLUDEPATH += /usr/local/include/QuaZip-Qt6-1.5/quazip
+
+   LIBS        += -L/usr/local/lib -lpoppler
+   INCLUDEPATH += /usr/local/include/poppler
+
+   INCLUDEPATH += /usr/local/opt/openssl/include
 
    QMAKE_MAC_SDK = macosx
    QMAKE_MACOSX_DEPLOYMENT_TARGET = 12
 
    # For universal builds
-   QMAKE_APPLE_DEVICE_ARCHS=x86_64 arm64
+   QMAKE_APPLE_DEVICE_ARCHS=x86_64
    #QMAKE_APPLE_DEVICE_ARCHS = arm64
 
    QMAKE_CXXFLAGS += -Wno-overloaded-virtual
