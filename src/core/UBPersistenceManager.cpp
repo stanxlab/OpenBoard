@@ -474,6 +474,21 @@ bool UBPersistenceManager::isSceneInCached(std::shared_ptr<UBDocumentProxy> prox
     return mSceneCache.contains(proxy, index);
 }
 
+std::shared_ptr<UBDocumentProxy> UBPersistenceManager::loadLastOpenedDocument()
+{
+    mDocumentRepositoryPath = UBSettings::userDocumentDirectory();
+    QDir rootDir(mDocumentRepositoryPath);
+    QFileInfoList contentInfoList = rootDir.entryInfoList(QDir::Dirs | QDir::NoDotAndDotDot, QDir::Time | QDir::Reversed);
+
+    if (contentInfoList.isEmpty())
+    {
+        return nullptr;
+    }
+
+    QFileInfo lastOpenedDocumentInfo = contentInfoList.last();
+    return createDocumentProxyStructure(lastOpenedDocumentInfo);
+}
+
 QStringList UBPersistenceManager::allShapes()
 {
     QString shapeLibraryPath = UBSettings::settings()->applicationShapeLibraryDirectory();

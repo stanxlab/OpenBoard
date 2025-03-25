@@ -156,6 +156,8 @@ class UBPersistenceManager : public QObject
 
         void closing();
         bool isSceneInCached(std::shared_ptr<UBDocumentProxy>proxy, int index) const;
+        
+        std::shared_ptr<UBDocumentProxy> loadLastOpenedDocument();
 
     signals:
         void documentCreated(std::shared_ptr<UBDocumentProxy> pDocumentProxy);

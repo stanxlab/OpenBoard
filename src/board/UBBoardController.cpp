@@ -150,10 +150,13 @@ void UBBoardController::init()
     connect(persistenceManager, &UBPersistenceManager::documentSceneMoved, this, &UBBoardController::documentSceneMoved);
     connect(persistenceManager, &UBPersistenceManager::documentSceneDeleted, this, &UBBoardController::documentSceneDeleted);
 
-    std::shared_ptr<UBDocumentProxy> doc = UBPersistenceManager::persistenceManager()->createNewDocument();
-
-    if (doc)
-    {
+    // 优先获取现有的文件
+    std::shared_ptr<UBDocumentProxy> doc = persistenceManager->loadLastOpenedDocument();
+    if(!doc){
+        doc = UBPersistenceManager::persistenceManager()->createNewDocument();
+    }
+    if (doc){
+        qInfo() << "--->last doc Path:" << doc->persistencePath(); 
         mInitialDocumentScene = setActiveDocumentScene(doc);
     }
 
