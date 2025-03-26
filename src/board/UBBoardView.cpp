@@ -317,7 +317,6 @@ bool UBBoardView::event (QEvent * e)
         if (nativeGestureEvent) {
 
             if (nativeGestureEvent->gestureType() == Qt::ZoomNativeGesture) {
-                qInfo() << "-->Gesture detected! Value: " << nativeGestureEvent->value();
                 // Calculate the zoom factor
                 qreal newZoomFactor = 1 + nativeGestureEvent->value() * 5;
                 newZoomFactor = qBound(0.8, newZoomFactor, 1.4);
@@ -817,7 +816,6 @@ QGraphicsItem* UBBoardView::determineItemToMove(QGraphicsItem *item)
 
 void UBBoardView::handleItemMousePress(QMouseEvent *event)
 {
-    qInfo() << "UBBoardView::handleItemMousePress";
     mLastPressedMousePos = mapToScene(event->pos());
     mFirstPressedMousePos = mLastPressedMousePos;
 

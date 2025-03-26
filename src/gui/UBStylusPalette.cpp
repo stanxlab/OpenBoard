@@ -76,7 +76,7 @@ UBStylusPalette::UBStylusPalette(QWidget *parent, Qt::Orientation orient)
     UBApplication::mainWindow->actionSnap->setProperty("ungrouped", true);
 
     setActions(actions);
-    setButtonIconSize(QSize(42, 42));
+    setButtonIconSize(QSize(30, 30));
     groupActions();
 
     UBShortcutManager::shortcutManager()->addActionGroup(mActionGroup);

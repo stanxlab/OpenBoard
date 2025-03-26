@@ -83,3 +83,4 @@ plugins/cffadaptor/objects
 .directory
 .DS_Store
 Doxyfile
+.vscode

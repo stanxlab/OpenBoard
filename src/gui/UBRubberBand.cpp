@@ -51,7 +51,7 @@ UBRubberBand::UBRubberBand(Shape s, QWidget * p)
 #ifdef Q_OS_WIN
     customStyle = QStyleFactory::create("windows");
 #elif defined(Q_OS_OSX)
-    customStyle = QStyleFactory::create("macintosh");
+    customStyle = QStyleFactory::create("macos");
 #elif defined(Q_OS_LINUX)
     customStyle = QStyleFactory::create("oxygen");
 #endif
