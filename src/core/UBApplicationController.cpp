@@ -199,7 +199,9 @@ void UBApplicationController::adaptToolBar()
     mMainWindow->actionClearPage->setVisible(Board == mMainMode && highResolution);
     mMainWindow->actionBoard->setVisible(Board != mMainMode || highResolution);
     mMainWindow->actionDocument->setVisible(Document != mMainMode || highResolution);
-    mMainWindow->actionWeb->setVisible(Internet != mMainMode || highResolution);
+    // mMainWindow->actionWeb->setVisible(Internet != mMainMode || highResolution);
+    // 不显示web
+    mMainWindow->actionWeb->setVisible(false);
     mMainWindow->boardToolBar->setIconSize(QSize(highResolution ? 48 : 42, mMainWindow->boardToolBar->iconSize().height()));
 
     mMainWindow->actionBoard->setEnabled(mMainMode != Board);

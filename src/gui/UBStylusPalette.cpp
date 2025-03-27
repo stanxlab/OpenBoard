@@ -51,29 +51,30 @@ UBStylusPalette::UBStylusPalette(QWidget *parent, Qt::Orientation orient)
 {
     QList<QAction*> actions;
 
-    actions << UBApplication::mainWindow->actionPen;
-    actions << UBApplication::mainWindow->actionEraser;
+    actions << UBApplication::mainWindow->actionPen; // key 1
+    actions << UBApplication::mainWindow->actionSelector; // key 2
+    actions << UBApplication::mainWindow->actionEraser; // key e
     actions << UBApplication::mainWindow->actionMarker;
-    actions << UBApplication::mainWindow->actionSelector;
-    actions << UBApplication::mainWindow->actionPlay;
 
-    actions << UBApplication::mainWindow->actionHand;
-    actions << UBApplication::mainWindow->actionZoomIn;
-    actions << UBApplication::mainWindow->actionZoomOut;
+    // Hide some tools
+    // actions << UBApplication::mainWindow->actionHand;
+    // actions << UBApplication::mainWindow->actionZoomIn;
+    // actions << UBApplication::mainWindow->actionZoomOut;
 
     actions << UBApplication::mainWindow->actionPointer;
     actions << UBApplication::mainWindow->actionLine;
     actions << UBApplication::mainWindow->actionText;
-    actions << UBApplication::mainWindow->actionCapture;
+    actions << UBApplication::mainWindow->actionPlay;
+    // actions << UBApplication::mainWindow->actionCapture;
 
-    if(UBPlatformUtils::hasVirtualKeyboard())
-    {
-        actions << UBApplication::mainWindow->actionVirtualKeyboard;
-        UBApplication::mainWindow->actionVirtualKeyboard->setProperty("ungrouped", true);
-    }
+    // if(UBPlatformUtils::hasVirtualKeyboard())
+    // {
+    //     actions << UBApplication::mainWindow->actionVirtualKeyboard;
+    //     UBApplication::mainWindow->actionVirtualKeyboard->setProperty("ungrouped", true);
+    // }
 
-    actions << UBApplication::mainWindow->actionSnap;
-    UBApplication::mainWindow->actionSnap->setProperty("ungrouped", true);
+    // actions << UBApplication::mainWindow->actionSnap;
+    // UBApplication::mainWindow->actionSnap->setProperty("ungrouped", true);
 
     setActions(actions);
     setButtonIconSize(QSize(30, 30));
@@ -89,7 +90,6 @@ UBStylusPalette::UBStylusPalette(QWidget *parent, Qt::Orientation orient)
     {
         connect(button, SIGNAL(doubleClicked()), this, SLOT(stylusToolDoubleClicked()));
     }
-
 }
 
 void UBStylusPalette::initPosition()

@@ -59,8 +59,8 @@ UBDesktopPalette::UBDesktopPalette(QWidget *parent, UBRightPalette* _rightPalett
 
     actions << UBApplication::mainWindow->actionPen;
     actions << UBApplication::mainWindow->actionEraser;
-    actions << UBApplication::mainWindow->actionMarker;
     actions << UBApplication::mainWindow->actionSelector;
+    actions << UBApplication::mainWindow->actionMarker;
     actions << UBApplication::mainWindow->actionPointer;
 
     if (UBPlatformUtils::hasVirtualKeyboard())
@@ -185,9 +185,9 @@ void UBDesktopPalette::maximizeMe()
 
     actions << mActionUniboard;
     actions << UBApplication::mainWindow->actionPen;
+    actions << UBApplication::mainWindow->actionSelector;
     actions << UBApplication::mainWindow->actionEraser;
     actions << UBApplication::mainWindow->actionMarker;
-    actions << UBApplication::mainWindow->actionSelector;
     actions << UBApplication::mainWindow->actionPointer;
     if (UBPlatformUtils::hasVirtualKeyboard())
         actions << UBApplication::mainWindow->actionVirtualKeyboard;
