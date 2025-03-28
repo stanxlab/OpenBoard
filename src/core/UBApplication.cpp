@@ -468,7 +468,7 @@ void UBApplication::showDocument()
 }
 
 int UBApplication::toolBarHeight()
-{
+{   
     return mainWindow->boardToolBar->rect().height();
 }
 
@@ -482,6 +482,10 @@ void UBApplication::toolBarPositionChanged(QVariant topOrBottom)
     else
         area = Qt::BottomToolBarArea;
 
+    mainWindow->boardToolBar->setFixedHeight(50); // 设置固定高度为 50px
+    mainWindow->webToolBar->setFixedHeight(50);
+    mainWindow->documentToolBar->setFixedHeight(50);
+    
     mainWindow->addToolBar(area, mainWindow->boardToolBar);
     mainWindow->addToolBar(area, mainWindow->webToolBar);
     mainWindow->addToolBar(area, mainWindow->documentToolBar);

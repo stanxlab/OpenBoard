@@ -602,7 +602,7 @@ void UBBoardController::setToolbarTexts()
     if (mMainWindow->width() <= 1280)
         iconSize = QSize(24, 24);
     else
-        iconSize = QSize(48, 32);
+        iconSize = QSize(32, 24); // 设置图标大小 
 
     mMainWindow->boardToolBar->setIconSize(iconSize);
     mMainWindow->webToolBar->setIconSize(iconSize);

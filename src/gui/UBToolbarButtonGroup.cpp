@@ -74,6 +74,7 @@ UBToolbarButtonGroup::UBToolbarButtonGroup(QToolBar *toolBar, const QList<QActio
         mButtons.append(button);
         button->setDefaultAction(action);
         button->setCheckable(true);
+        button->setFixedSize(30, 30); // 设置按钮大小
 
         if(i == 0)
         {
