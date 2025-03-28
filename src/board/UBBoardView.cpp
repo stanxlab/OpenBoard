@@ -216,22 +216,54 @@ void UBBoardView::keyPressEvent (QKeyEvent *event)
             switch (event->key ())
             {
             case Qt::Key_Up:
-            case Qt::Key_PageUp:
-            case Qt::Key_Left:
             {
-                mController->previousScene ();
+                mController->handScroll (0, -100);
+                event->accept ();
                 break;
             }
-
+            case Qt::Key_Left:
+            {
+                mController->handScroll (-100, 0);
+                event->accept ();
+                break;
+            }
             case Qt::Key_Down:
-            case Qt::Key_PageDown:
+            {
+                mController->handScroll (0, 100);
+                event->accept ();
+                break;
+            }
             case Qt::Key_Right:
-            case Qt::Key_Space:
+            {
+                mController->handScroll (100, 0);
+                event->accept ();
+                break;
+            }
+#ifdef Q_OS_OSX
+            case Qt::Key_Space: // 来回切换 Pen 和 Eraser
+            {
+                if(UBDrawingController::drawingController ()->stylusTool () == UBStylusTool::Pen)
+                {
+                    UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Eraser);
+                }
+                else
+                {
+                    UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Pen);
+                }
+                event->accept ();
+                break;
+            }
+#endif
+            case Qt::Key_PageDown:
             {
                 mController->nextScene ();
                 break;
             }
-
+            case Qt::Key_PageUp:
+            {
+                mController->previousScene ();
+                break;
+            }
             case Qt::Key_Home:
             {
                 mController->firstScene ();
@@ -254,16 +286,17 @@ void UBBoardView::keyPressEvent (QKeyEvent *event)
             switch (event->key ())
             {
             case Qt::Key_Plus:
+            case Qt::Key_Equal:
             {   
-                qInfo() << "--->zoomIn: ";
-                mController->zoomIn ();
+                // mController->zoomIn ();
+                mController->zoom(1.2, mapToScene(viewport()->rect().center()));
                 event->accept ();
                 break;
             }
             case Qt::Key_Minus:
             {
-                qInfo() << "--->zoomOut: ";
-                mController->zoomOut ();
+                // mController->zoomOut ();
+                mController->zoom(0.8, mapToScene(viewport()->rect().center()));
                 event->accept ();
                 break;
             }
@@ -287,14 +320,12 @@ void UBBoardView::keyPressEvent (QKeyEvent *event)
             }
             case Qt::Key_Up:
             {
-                mController->handScroll (0, -100);
-                event->accept ();
+                mController->previousScene ();
                 break;
             }
             case Qt::Key_Down:
             {
-                mController->handScroll (0, 100);
-                event->accept ();
+                mController->nextScene ();
                 break;
             }
             default:
@@ -309,17 +340,22 @@ void UBBoardView::keyPressEvent (QKeyEvent *event)
 
 bool UBBoardView::event (QEvent * e)
 {
-    // qInfo() << "UBBoardView::event" << e->type();
     if (e->type() == QEvent::NativeGesture) {
         // mac 触控板缩放手势
         QNativeGestureEvent *nativeGestureEvent = dynamic_cast<QNativeGestureEvent *>(e);
         // qInfo() << "-->Native Gesture event triggered!" << nativeGestureEvent->gestureType();
         if (nativeGestureEvent) {
-
             if (nativeGestureEvent->gestureType() == Qt::ZoomNativeGesture) {
                 // Calculate the zoom factor
-                qreal newZoomFactor = 1 + nativeGestureEvent->value() * 5;
-                newZoomFactor = qBound(0.8, newZoomFactor, 1.4);
+                qreal gestureValue = nativeGestureEvent->value() * 5;
+                // 如果值是负数，限制最小值为 -0.05；如果是正数，限制最小值为 0.05
+                if (gestureValue < 0) {
+                    gestureValue = qMin(gestureValue, -0.05); // 限制负数的最小值为 -0.05
+                } else if (gestureValue > 0) {
+                    gestureValue = qMax(gestureValue, 0.05);  // 限制正数的最小值为 0.05
+                }
+                qreal newZoomFactor = 1 + gestureValue;
+                newZoomFactor = qBound(0.8, newZoomFactor, 1.3);
 
                 if (newZoomFactor < 1 && (horizontalScrollBar()->maximum() == 0) && (verticalScrollBar()->maximum() == 0))
                 {
