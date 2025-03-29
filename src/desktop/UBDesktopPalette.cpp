@@ -57,9 +57,9 @@ UBDesktopPalette::UBDesktopPalette(QWidget *parent, UBRightPalette* _rightPalett
     actions << mActionUniboard;
 
 
+    actions << UBApplication::mainWindow->actionSelector;
     actions << UBApplication::mainWindow->actionPen;
     actions << UBApplication::mainWindow->actionEraser;
-    actions << UBApplication::mainWindow->actionSelector;
     actions << UBApplication::mainWindow->actionMarker;
     actions << UBApplication::mainWindow->actionPointer;
 

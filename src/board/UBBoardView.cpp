@@ -241,14 +241,26 @@ void UBBoardView::keyPressEvent (QKeyEvent *event)
             }
 #ifdef Q_OS_OSX
             case Qt::Key_Space: // 来回切换 Pen 和 Eraser
-            {
-                if(UBDrawingController::drawingController ()->stylusTool () == UBStylusTool::Pen)
+            {   
+                if (scene() && scene()->selectedItems().count() > 0)
                 {
-                    UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Eraser);
-                }
-                else
-                {
-                    UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Pen);
+                    foreach(QGraphicsItem* item, scene()->selectedItems())
+                    {
+                        UBGraphicsItemDelegate *curDelegate = UBGraphicsItem::Delegate(item);
+                        if (!curDelegate) {
+                            continue;
+                        }
+                        curDelegate->remove(true);
+                    }
+                } else {
+                    UBStylusTool::Enum lastTool = static_cast<UBStylusTool::Enum>(UBDrawingController::drawingController()->lastStylusTool());
+                    UBDrawingController::drawingController()->setStylusTool(lastTool);
+                    // if(UBDrawingController::drawingController()->stylusTool() == UBStylusTool::Pen)
+                    // {
+                    //     UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Eraser);
+                    // } else {
+                    //     UBDrawingController::drawingController()->setStylusTool(UBStylusTool::Pen);
+                    // }
                 }
                 event->accept ();
                 break;

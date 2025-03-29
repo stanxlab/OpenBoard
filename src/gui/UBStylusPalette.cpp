@@ -51,8 +51,8 @@ UBStylusPalette::UBStylusPalette(QWidget *parent, Qt::Orientation orient)
 {
     QList<QAction*> actions;
 
-    actions << UBApplication::mainWindow->actionPen; // key 1
-    actions << UBApplication::mainWindow->actionSelector; // key 2
+    actions << UBApplication::mainWindow->actionSelector; // key 1
+    actions << UBApplication::mainWindow->actionPen; // key 2
     actions << UBApplication::mainWindow->actionEraser; // key e
     actions << UBApplication::mainWindow->actionMarker;
 

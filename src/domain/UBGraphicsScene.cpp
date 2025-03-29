@@ -3084,7 +3084,7 @@ void UBGraphicsScene::keyReleaseEvent(QKeyEvent * keyEvent)
 
         // Delete selection scene event
 #ifdef Q_OS_MAC
-        if (keyEvent->key() == Qt::Key_Backspace)
+        if (keyEvent->key() == Qt::Key_Backspace || keyEvent->key() == Qt::Key_Delete)
 #else
         if (keyEvent->matches(QKeySequence::Delete))
 #endif

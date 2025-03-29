@@ -209,6 +209,7 @@ private:
     bool bIsControl;
     bool bIsDesktop;
     bool mRubberBandInPlayMode;
+    UBStylusTool::Enum lastUsedTool;
 
     QMargins mMargins{};
     UBSnapIndicator* mSnapIndicator{nullptr};

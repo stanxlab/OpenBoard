@@ -51,6 +51,7 @@ class UBDrawingController : public QObject
 
         int stylusTool();
         int latestDrawingTool();
+        int lastStylusTool();
 
         bool isDrawingTool(int tool = -1);
         bool isSnappingTool() const;
@@ -94,6 +95,7 @@ class UBDrawingController : public QObject
         QPointer<UBAbstractDrawRuler> mActiveRuler;
         UBStylusTool::Enum mStylusTool;
         UBStylusTool::Enum mLatestDrawingTool;
+        UBStylusTool::Enum mLastStylusTool;
         bool mIsDesktopMode;
 
         static UBDrawingController* sDrawingController;
