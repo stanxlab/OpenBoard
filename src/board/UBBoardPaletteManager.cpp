@@ -238,7 +238,7 @@ void UBBoardPaletteManager::setupPalettes()
     // Add the other palettes
     mStylusPalette = new UBStylusPalette(mContainer, UBSettings::settings()->appToolBarOrientationVertical->get().toBool() ? Qt::Vertical : Qt::Horizontal);
     connect(mStylusPalette, SIGNAL(stylusToolDoubleClicked(int)), UBApplication::boardController, SLOT(stylusToolDoubleClicked(int)));
-    mStylusPalette->hide(); // always hide stylus palette at startup
+    mStylusPalette->show(); // always show stylus palette at startup
 
     mZoomPalette = new UBZoomPalette(mContainer);
 
@@ -1010,7 +1010,7 @@ void UBBoardPaletteManager::changeStylusPaletteOrientation(QVariant var)
     }
 
     connect(mStylusPalette, SIGNAL(stylusToolDoubleClicked(int)), UBApplication::boardController, SLOT(stylusToolDoubleClicked(int)));
-    mStylusPalette->setVisible(false); // always hide stylus palette at startup
+    mStylusPalette->setVisible(true); // always show stylus palette at startup
 }
 
 

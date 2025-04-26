@@ -217,25 +217,25 @@ void UBBoardView::keyPressEvent (QKeyEvent *event)
             {
             case Qt::Key_Up:
             {
-                mController->handScroll (0, -100);
+                mController->handScroll (0, -60);
                 event->accept ();
                 break;
             }
             case Qt::Key_Left:
             {
-                mController->handScroll (-100, 0);
+                mController->handScroll (-60, 0);
                 event->accept ();
                 break;
             }
             case Qt::Key_Down:
             {
-                mController->handScroll (0, 100);
+                mController->handScroll (0, 60);
                 event->accept ();
                 break;
             }
             case Qt::Key_Right:
             {
-                mController->handScroll (100, 0);
+                mController->handScroll (60, 0);
                 event->accept ();
                 break;
             }
@@ -1162,7 +1162,8 @@ void UBBoardView::longPressEvent()
 
     if (UBStylusTool::Selector == currentTool)
     {
-        drawingController->setStylusTool(UBStylusTool::Play);
+        // do not set selector tool, because it is already set
+        // drawingController->setStylusTool(UBStylusTool::Play);
     }
     else
         if (currentTool == UBStylusTool::Play)
