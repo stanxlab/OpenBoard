@@ -31,10 +31,10 @@
 #define UBBOARDCONTROLLER_H_
 
 #include <QtGui>
-
 #include <QObject>
 #include <QHBoxLayout>
 #include <QUndoCommand>
+#include <QShortcut>
 
 #include "core/UB.h"
 #include "core/UBApplicationController.h"

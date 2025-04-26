@@ -1148,19 +1148,24 @@ void UBPersistenceManager::persistDocumentScene(std::shared_ptr<UBDocumentProxy>
     QDir dir(pDocumentProxy->persistencePath());
     dir.mkpath(pDocumentProxy->persistencePath());
 
+    // 创建场景的深拷贝，避免影响原始场景
+    std::shared_ptr<UBGraphicsScene> copiedScene = pScene->sceneDeepCopy();
+
+    // 使用异步保存
     if(forceImmediateSaving)
     {
-        UBSvgSubsetAdaptor::persistScene(pDocumentProxy, pScene, pSceneIndex);
+        // 如果是强制立即保存，使用同步方式
+        UBSvgSubsetAdaptor::persistScene(pDocumentProxy, copiedScene, pSceneIndex);
     }
     else
     {
-       std::shared_ptr<UBGraphicsScene> copiedScene = pScene->sceneDeepCopy();
-       mWorker->saveScene(pDocumentProxy, copiedScene.get(), pSceneIndex);
-
-       // keep copiedScene alive until saving is finished
-       mScenesToSave.append(copiedScene);
+        // 使用异步保存
+        mWorker->saveScene(pDocumentProxy, copiedScene.get(), pSceneIndex);
+        // 保持复制的场景直到保存完成
+        mScenesToSave.append(copiedScene);
     }
 
+    // 保存缩略图
     UBThumbnailAdaptor::persistScene(pDocumentProxy, pScene, pSceneIndex);
     pScene->setModified(false);
 

@@ -119,6 +119,12 @@ UBBoardController::UBBoardController(UBMainWindow* mainWindow)
     mPenColorOnLightBackground = UBSettings::settings()->penColors(false).at(penColorIndex);
     mMarkerColorOnDarkBackground = UBSettings::settings()->markerColors(true).at(markerColorIndex);
     mMarkerColorOnLightBackground = UBSettings::settings()->markerColors(false).at(markerColorIndex);
+
+    // 添加保存快捷键
+    QShortcut* saveShortcut = new QShortcut(QKeySequence::Save, mMainWindow);
+    connect(saveShortcut, &QShortcut::activated, this, [this]() {
+        saveData(sf_showProgress);
+    });
 }
 
 
@@ -489,7 +495,8 @@ void UBBoardController::saveData(SaveFlags fls)
         UBApplication::showMessage(tr("Saving document..."));
     }
     if (mActiveScene && mActiveScene->isModified()) {
-        persistCurrentScene(true);
+        // 使用异步保存
+        persistCurrentScene(false, false);
     }
     if (verbose) {
         UBApplication::showMessage(tr("Document has just been saved..."));
@@ -2033,6 +2040,7 @@ void UBBoardController::autosaveTimeout()
         //perform autosave only in board mode
         return;
     }
+
 
     saveData(sf_showProgress);
     UBSettings::settings()->save();
